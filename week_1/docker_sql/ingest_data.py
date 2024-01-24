@@ -81,3 +81,16 @@ if __name__ == '__main__':
     main(args)
 # python ingest_data.py --user postgres --password 123456 --host localhost --port 5432 --db ny_taxi --table_name green_taxi --url https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-09.csv.gz
 # python ingest_data.py --user postgres --password 123456 --host localhost --port 5432 --db ny_taxi --table_name zones --url https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv
+    
+# URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-09.csv.gz"
+
+# docker run -it \
+#   --network=pg-network \
+#   taxi_ingest:v001 \
+#     --user=root \
+#     --password=root \
+#     --host=pgdatabase \
+#     --port=5432 \
+#     --db=ny_taxi \
+#     --table_name=green_taxi \
+#     --url=${URL}
