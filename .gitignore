@@ -163,6 +163,8 @@ cython_debug/
 
 **.csv.gz
 
+
+**.csv
 /week1/docker_sql/ny_taxi_postgres_data
 
 **.parquet

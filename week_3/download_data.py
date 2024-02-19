@@ -4,6 +4,7 @@ import os
 import json
 
 link ='https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2022-{}.parquet'
+link = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/fhv/fhv_tripdata_2019-{}.csv.gz'
 
 def download_files():
     for i in range(1,13):
