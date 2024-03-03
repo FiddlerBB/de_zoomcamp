@@ -1,0 +1,145 @@
+blocks:
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: data_loaders/locations.py
+  downstream_blocks:
+  - raw_locations
+  - cities_metric
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: locations
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: locations
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - locations_bq
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: raw_locations
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - locations
+  uuid: raw_locations
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - transform_metrics
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: cities_metric
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks:
+  - locations
+  uuid: cities_metric
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - raw_cities_metrics
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: transform_metrics
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - cities_metric
+  uuid: transform_metrics
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - bq_citiest_metric
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: raw_cities_metrics
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - transform_metrics
+  uuid: raw_cities_metrics
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: locations_bq
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - raw_locations
+  uuid: locations_bq
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: bq_citiest_metric
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - raw_cities_metrics
+  uuid: bq_citiest_metric
+cache_block_output_in_memory: false
+callbacks: []
+concurrency_config: {}
+conditionals: []
+created_at: '2024-03-03 08:49:04.790472+00:00'
+data_integration: null
+description: null
+executor_config: {}
+executor_count: 1
+executor_type: null
+extensions: {}
+name: Open Weather Pipeline
+notification_config: {}
+remote_variables_dir: null
+retry_config: {}
+run_pipeline_in_one_process: false
+settings:
+  triggers: null
+spark_config: {}
+tags: []
+type: python
+updated_at: '2024-03-03T15:49:52+00:00'
+uuid: open_weather_pipeline
+variables_dir: /home/src/mage_data/OPEN_WEATHER_PIPELINE
+widgets: []
