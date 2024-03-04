@@ -1,0 +1,6 @@
+requests
+pydantic==2.6.3
+python-dotenv
+pandas
+pyarrow
+google-cloud-storage

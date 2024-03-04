@@ -21,10 +21,10 @@ def export_data_to_google_cloud_storage(df, **kwargs) -> None:
 
     bucket_name = 'de_zoomcamp_2024_bucket'
     object_key = 'raw/vietnam_locations.parquet'
-
     GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).export(
         df,
         bucket_name,
         object_key,
 
     )
+    return df
