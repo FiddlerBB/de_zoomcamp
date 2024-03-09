@@ -1,0 +1,14 @@
+sources:
+- description: Dataframes Mage upstream blocks
+  loader: mage
+  name: mage_open_weather
+  schema: de_zoomcamp_pj
+  tables:
+  - description: Dataframe for block `locations_bq` of the `open_weather_pipeline`
+      mage pipeline.
+    identifier: mage_open_weather_pipeline_locations_bq
+    meta:
+      block_uuid: locations_bq
+      pipeline_uuid: open_weather_pipeline
+    name: open_weather_pipeline_locations_bq
+version: 2

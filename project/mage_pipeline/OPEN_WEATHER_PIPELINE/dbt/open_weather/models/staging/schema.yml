@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: stg_locations
+    description: data for storing all locations of VietNam's cities

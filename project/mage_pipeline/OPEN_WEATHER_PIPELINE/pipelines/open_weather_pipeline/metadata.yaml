@@ -74,7 +74,7 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - stg_locations
+  - select_model
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -92,26 +92,26 @@ blocks:
   configuration:
     dbt:
       command: run
-    dbt_profile_target: dev
+    dbt_profile_target: ''
     dbt_project_name: dbt/open_weather
     disable_query_preprocessing: false
     export_write_policy: append
     file_source:
-      path: dbts/stg_locations.yaml
+      path: dbts/select_model.yaml
     use_raw_sql: false
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: yaml
-  name: stg_locations
+  name: select_model
   retry_config: null
   status: failed
   timeout: null
   type: dbt
   upstream_blocks:
   - locations_bq
-  uuid: stg_locations
+  uuid: select_model
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}

@@ -28,3 +28,4 @@ def export_data_to_google_cloud_storage(df, **kwargs) -> None:
         object_key,
 
     )
+    return df

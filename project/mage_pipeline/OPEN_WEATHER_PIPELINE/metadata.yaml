@@ -1,2 +1,4 @@
 project_uuid: 1fbba71ca1eb4aedbca7291e53681229
 help_improve_mage: true
+features:
+  command_center: true
