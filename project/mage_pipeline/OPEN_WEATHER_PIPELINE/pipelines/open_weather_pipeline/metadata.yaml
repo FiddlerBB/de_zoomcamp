@@ -31,13 +31,13 @@ blocks:
   language: python
   name: extract_load_city_metrics_gcs
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: data_loader
   upstream_blocks:
   - locations
   uuid: extract_load_city_metrics_gcs
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks: []
@@ -47,7 +47,7 @@ blocks:
   language: python
   name: metric_gcs_bq
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: data_exporter
   upstream_blocks:
@@ -92,26 +92,51 @@ blocks:
   configuration:
     dbt:
       command: run
-    dbt_profile_target: ''
+    dbt_profile_target: dev
+    dbt_profiles_file_path: dbt/open_weather/profiles.yml
     dbt_project_name: dbt/open_weather
     disable_query_preprocessing: false
     export_write_policy: append
     file_source:
       path: dbts/select_model.yaml
     use_raw_sql: false
-  downstream_blocks: []
+  downstream_blocks:
+  - dim_locations
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: yaml
   name: select_model
   retry_config: null
-  status: failed
+  status: executed
   timeout: null
   type: dbt
   upstream_blocks:
   - locations_bq
   uuid: select_model
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    dbt:
+      command: run
+    dbt_profile_target: dev
+    dbt_profiles_file_path: dbt/open_weather/profiles.yml
+    dbt_project_name: dbt/open_weather
+    file_source:
+      path: dbts/dim_locations.yaml
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: yaml
+  name: dim_locations
+  retry_config: null
+  status: executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - select_model
+  uuid: dim_locations
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}

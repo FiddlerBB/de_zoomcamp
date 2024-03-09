@@ -11,7 +11,7 @@ if 'data_exporter' not in globals():
 config_path = path.join(get_repo_path(), 'io_config.yaml')
 config_profile = 'default'
 bucket_name = 'de_zoomcamp_2024_bucket'
-table_id = 'pelagic-bonbon-387815.de_zoomcamp_pj.test_locations'
+table_id = 'pelagic-bonbon-387815.de_zoomcamp_pj.cities_metrics'
 
 
 def load_from_google_cloud_storage(object_key: str):

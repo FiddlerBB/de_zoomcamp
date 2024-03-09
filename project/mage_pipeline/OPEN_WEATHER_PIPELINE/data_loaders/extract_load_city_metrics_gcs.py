@@ -80,10 +80,8 @@ def load_data_from_api(df: DataFrame, *args, **kwargs):
         print(f"getting data from city: {city_name}")
         metrics = get_pollution_data(start, end, row['latitude'], row['longitude']) 
         metrics['city_id'] = row['city_id']
-        # result.append(metrics)
         df = pd.json_normalize(metrics, "list", [["coord", "lon"], ["coord", "lat"], 'city_id'])
         object_name = f'raw/ciy_metrics/{city_name}.parquet'
         export_data_to_google_cloud_storage(df, object_name)
         objects_path.append(object_name)
-    # df_result = pd.json_normalize(result, "list", [["coord", "lon"], ["coord", "lat"], 'city_id'])
     return objects_path

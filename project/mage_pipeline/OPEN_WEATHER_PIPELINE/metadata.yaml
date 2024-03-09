@@ -2,3 +2,7 @@ project_uuid: 1fbba71ca1eb4aedbca7291e53681229
 help_improve_mage: true
 features:
   command_center: true
+  add_new_block_v2: true
+  code_block_v2: true
+  dbt_v2: true
+pipelines:

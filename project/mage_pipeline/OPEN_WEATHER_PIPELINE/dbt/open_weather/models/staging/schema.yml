@@ -1,5 +1,15 @@
 version: 2
 
+sources:
+  - name: staging
+    database: pelagic-bonbon-387815
+    schema: de_zoomcamp_pj
+    tables:
+      - name: locations
+      - name: cities_metrics
+
+
 models:
   - name: stg_locations
     description: data for storing all locations of VietNam's cities
+  - name: stg_cities_metrics
