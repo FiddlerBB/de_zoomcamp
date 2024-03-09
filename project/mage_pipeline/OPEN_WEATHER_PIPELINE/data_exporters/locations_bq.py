@@ -25,3 +25,4 @@ def export_data_to_big_query(df: DataFrame, **kwargs) -> None:
         table_id,
         if_exists='replace',  # Specify resolution policy if table name already exists
     )
+    return df
