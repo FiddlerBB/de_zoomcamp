@@ -11,4 +11,11 @@ sources:
       block_uuid: locations_bq
       pipeline_uuid: open_weather_pipeline
     name: open_weather_pipeline_locations_bq
+  - description: Dataframe for block `metric_gcs_bq` of the `open_weather_pipeline`
+      mage pipeline.
+    identifier: mage_open_weather_pipeline_metric_gcs_bq
+    meta:
+      block_uuid: metric_gcs_bq
+      pipeline_uuid: open_weather_pipeline
+    name: open_weather_pipeline_metric_gcs_bq
 version: 2

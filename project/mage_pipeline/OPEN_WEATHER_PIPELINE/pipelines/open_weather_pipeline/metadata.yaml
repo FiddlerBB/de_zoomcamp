@@ -40,19 +40,95 @@ blocks:
 - all_upstream_blocks_executed: false
   color: null
   configuration: {}
-  downstream_blocks: []
+  downstream_blocks:
+  - dbt/open_weather/models/staging/stg_cities_metrics
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
   name: metric_gcs_bq
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: data_exporter
   upstream_blocks:
   - extract_load_city_metrics_gcs
   uuid: metric_gcs_bq
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    dbt_profile_target: dev
+    dbt_profiles_file_path: dbt/open_weather/profiles.yml
+    dbt_project_name: dbt/open_weather
+    file_path: dbt/open_weather/models/staging/stg_cities_metrics.sql
+    file_source:
+      path: dbt/open_weather/models/staging/stg_cities_metrics.sql
+      project_path: dbt/open_weather
+    limit: 1000
+  downstream_blocks:
+  - dbt/open_weather/models/core/dim_cities_metrics
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dbt/open_weather/models/staging/stg_cities_metrics
+  retry_config: null
+  status: executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - metric_gcs_bq
+  uuid: dbt/open_weather/models/staging/stg_cities_metrics
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    dbt_profile_target: dev
+    dbt_profiles_file_path: dbt/open_weather/profiles.yml
+    dbt_project_name: dbt/open_weather
+    file_path: dbt/open_weather/models/core/dim_cities_metrics.sql
+    file_source:
+      path: dbt/open_weather/models/core/dim_cities_metrics.sql
+      project_path: dbt/open_weather
+    limit: 1000
+  downstream_blocks:
+  - dbt/open_weather/models/core/fact_metrics
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dbt/open_weather/models/core/dim_cities_metrics
+  retry_config: null
+  status: executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - dbt/open_weather/models/staging/stg_cities_metrics
+  uuid: dbt/open_weather/models/core/dim_cities_metrics
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    dbt_profile_target: dev
+    dbt_profiles_file_path: dbt/open_weather/profiles.yml
+    dbt_project_name: dbt/open_weather
+    file_path: dbt/open_weather/models/core/fact_metrics.sql
+    file_source:
+      path: dbt/open_weather/models/core/fact_metrics.sql
+      project_path: dbt/open_weather
+    limit: 1000
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dbt/open_weather/models/core/fact_metrics
+  retry_config: null
+  status: executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - dbt/open_weather/models/core/dim_cities_metrics
+  - dim_locations
+  uuid: dbt/open_weather/models/core/fact_metrics
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
@@ -124,7 +200,8 @@ blocks:
     dbt_project_name: dbt/open_weather
     file_source:
       path: dbts/dim_locations.yaml
-  downstream_blocks: []
+  downstream_blocks:
+  - dbt/open_weather/models/core/fact_metrics
   executor_config: null
   executor_type: local_python
   has_callback: false
