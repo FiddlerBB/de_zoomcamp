@@ -16,16 +16,19 @@ def export_data_to_google_cloud_storage(df, **kwargs) -> None:
 
     Docs: https://docs.mage.ai/design/data-loading#googlecloudstorage
     """
-    config_path = path.join(get_repo_path(), 'io_config.yaml')
-    config_profile = 'default'
+    if df:
+        config_path = path.join(get_repo_path(), 'io_config.yaml')
+        config_profile = 'default'
 
-    bucket_name = 'de_zoomcamp_2024_bucket'
-    object_key = 'raw/vietnam_locations.parquet'
+        bucket_name = 'de_zoomcamp_2024_bucket'
+        object_key = 'raw/vietnam_locations.parquet'
 
-    GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).export(
-        df,
-        bucket_name,
-        object_key,
+        GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).export(
+            df,
+            bucket_name,
+            object_key,
 
-    )
-    return df
+        )
+        return df           
+    else: 
+        return None

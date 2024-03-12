@@ -65,8 +65,9 @@ def locations(*args, **kwargs):
 
     if df.empty:
         df = get_locations()
-    return df
-
+        return df
+    else:
+        return None
 
 @test
 def test_output(output, *args) -> None:
