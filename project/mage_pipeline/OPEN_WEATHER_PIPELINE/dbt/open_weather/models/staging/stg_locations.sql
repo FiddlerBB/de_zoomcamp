@@ -1,3 +1,3 @@
 {{ config(materialized='view')}}
 
-select * from {{ source('staging', 'locations') }}
+select * from {{ source('source', 'locations') }}

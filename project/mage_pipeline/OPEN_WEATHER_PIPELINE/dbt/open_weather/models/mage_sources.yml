@@ -18,4 +18,11 @@ sources:
       block_uuid: metric_gcs_bq
       pipeline_uuid: open_weather_pipeline
     name: open_weather_pipeline_metric_gcs_bq
+  - description: Dataframe for block `cities_metrics_gcs2bq` of the `extract_by_date_open_weather`
+      mage pipeline.
+    identifier: mage_extract_by_date_open_weather_cities_metrics_gcs2bq
+    meta:
+      block_uuid: cities_metrics_gcs2bq
+      pipeline_uuid: extract_by_date_open_weather
+    name: extract_by_date_open_weather_cities_metrics_gcs2bq
 version: 2

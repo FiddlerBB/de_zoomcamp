@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: staging
+  - name: source
     database: pelagic-bonbon-387815
     schema: de_zoomcamp_pj
     tables:
