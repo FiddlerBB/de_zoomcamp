@@ -67,8 +67,8 @@ def get_locations_gcs(object_key) -> DataFrame:
         bucket_name,
         object_key,
     )
-    print(df.head())
     return df
+
 
 def get_data_bq(query: str):
     try: 

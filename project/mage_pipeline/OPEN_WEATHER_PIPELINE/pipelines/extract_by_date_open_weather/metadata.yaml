@@ -1,5 +1,5 @@
 blocks:
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks:
@@ -13,23 +13,9 @@ blocks:
   status: updated
   timeout: null
   type: data_loader
-  upstream_blocks: []
+  upstream_blocks:
+  - locations
   uuid: get_data_weather
-- all_upstream_blocks_executed: true
-  color: null
-  configuration: {}
-  downstream_blocks: []
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: test_gcs
-  retry_config: null
-  status: executed
-  timeout: null
-  type: data_loader
-  upstream_blocks: []
-  uuid: test_gcs
 - all_upstream_blocks_executed: false
   color: null
   configuration: {}
@@ -42,29 +28,12 @@ blocks:
   language: python
   name: cities_metrics_gcs2bq
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: data_exporter
   upstream_blocks:
   - get_data_weather
   uuid: cities_metrics_gcs2bq
-- all_upstream_blocks_executed: true
-  color: null
-  configuration:
-    file_source:
-      path: data_exporters/metric_gcs_bq.py
-  downstream_blocks: []
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: metric_gcs_bq
-  retry_config: null
-  status: not_executed
-  timeout: null
-  type: data_exporter
-  upstream_blocks: []
-  uuid: metric_gcs_bq
 - all_upstream_blocks_executed: false
   color: null
   configuration:
@@ -76,7 +45,8 @@ blocks:
       path: dbt/open_weather/models/staging/stg_locations.sql
       project_path: dbt/open_weather
     limit: 1000
-  downstream_blocks: []
+  downstream_blocks:
+  - dbt/open_weather/models/core/dim_locations
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -89,6 +59,29 @@ blocks:
   upstream_blocks:
   - cities_metrics_gcs2bq
   uuid: dbt/open_weather/models/staging/stg_locations
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    dbt_project_name: dbt/open_weather
+    file_path: dbt/open_weather/models/core/dim_locations.sql
+    file_source:
+      path: dbt/open_weather/models/core/dim_locations.sql
+      project_path: dbt/open_weather
+    limit: 1000
+  downstream_blocks:
+  - dbt/open_weather/models/core/fact_metrics
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dbt/open_weather/models/core/dim_locations
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - dbt/open_weather/models/staging/stg_locations
+  uuid: dbt/open_weather/models/core/dim_locations
 - all_upstream_blocks_executed: false
   color: null
   configuration:
@@ -125,7 +118,8 @@ blocks:
       path: dbt/open_weather/models/core/dim_cities_metrics.sql
       project_path: dbt/open_weather
     limit: 1000
-  downstream_blocks: []
+  downstream_blocks:
+  - dbt/open_weather/models/core/fact_metrics
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -138,6 +132,68 @@ blocks:
   upstream_blocks:
   - dbt/open_weather/models/staging/stg_cities_metrics
   uuid: dbt/open_weather/models/core/dim_cities_metrics
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    dbt_profile_target: dev
+    dbt_profiles_file_path: dbt/open_weather/profiles.yml
+    dbt_project_name: dbt/open_weather
+    file_path: dbt/open_weather/models/core/fact_metrics.sql
+    file_source:
+      path: dbt/open_weather/models/core/fact_metrics.sql
+      project_path: dbt/open_weather
+    limit: 1000
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dbt/open_weather/models/core/fact_metrics
+  retry_config: null
+  status: updated
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - dbt/open_weather/models/core/dim_cities_metrics
+  - dbt/open_weather/models/core/dim_locations
+  uuid: dbt/open_weather/models/core/fact_metrics
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: data_loaders/locations.py
+  downstream_blocks:
+  - raw_locations
+  - get_data_weather
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: locations
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: locations
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    file_source:
+      path: data_exporters/raw_locations.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: raw_locations
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - locations
+  uuid: raw_locations
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
