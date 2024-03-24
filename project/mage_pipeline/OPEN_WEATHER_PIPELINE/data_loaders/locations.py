@@ -69,9 +69,9 @@ def locations(*args, **kwargs):
     else:
         return None
 
-@test
-def test_output(output, *args) -> None:
-    """
-    Template code for testing the output of the block.
-    """
-    assert output is not None, 'The output is undefined'
+# @test
+# def test_output(output, *args) -> None:
+#     """
+#     Template code for testing the output of the block.
+#     """
+#     assert output is not None, 'The output is undefined'

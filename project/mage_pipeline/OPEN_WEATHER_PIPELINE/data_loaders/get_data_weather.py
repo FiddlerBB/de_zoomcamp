@@ -19,7 +19,7 @@ api_key = os.getenv('OPEN_WEATHER_API_KEY')
 config_profile = 'default'
 bucket_name = 'de_zoomcamp_2024_bucket'
 location_object = 'raw/vietnam_locations.parquet'
-default_day = "2024-03-01"
+default_day = os.getenv('DEFAULT_DATE')
 config_path = os.path.join(get_repo_path(), 'io_config.yaml')
 raw_cities_metrics_table_id = 'pelagic-bonbon-387815.de_zoomcamp_pj.cities_metrics'
 
@@ -82,7 +82,7 @@ def get_data_bq(query: str):
 def check_cities_metrics_date_bd():
     max_day_query = f'select max(dt) as max_dt from {raw_cities_metrics_table_id} limit 1'
     df = get_data_bq(max_day_query)
-    if not df.empty:
+    if df:
         max_day = df.iloc[0]['max_dt']
         print(f'Max day in Bigquery: {max_day}')
     else:

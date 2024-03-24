@@ -10,7 +10,7 @@ blocks:
   language: python
   name: get_data_weather
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: data_loader
   upstream_blocks:
@@ -150,7 +150,7 @@ blocks:
   language: sql
   name: dbt/open_weather/models/core/fact_metrics
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: dbt
   upstream_blocks:
@@ -170,8 +170,12 @@ blocks:
   has_callback: false
   language: python
   name: locations
-  retry_config: null
-  status: not_executed
+  retry_config:
+    delay: 5
+    exponential_backoff: true
+    max_delay: 60
+    retries: 3
+  status: updated
   timeout: null
   type: data_loader
   upstream_blocks: []
