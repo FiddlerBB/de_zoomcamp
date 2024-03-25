@@ -76,13 +76,13 @@ def get_data_bq(query: str):
         return df
     except Exception as e:
         print(e)
-        return None
+        return pd.DataFrame()
 
 
 def check_cities_metrics_date_bd():
     max_day_query = f'select max(dt) as max_dt from {raw_cities_metrics_table_id} limit 1'
     df = get_data_bq(max_day_query)
-    if df:
+    if not df.empty:
         max_day = df.iloc[0]['max_dt']
         print(f'Max day in Bigquery: {max_day}')
     else:
