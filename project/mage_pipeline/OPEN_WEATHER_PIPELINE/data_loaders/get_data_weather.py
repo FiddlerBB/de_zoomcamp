@@ -17,7 +17,7 @@ if 'test' not in globals():
 
 api_key = os.getenv('OPEN_WEATHER_API_KEY')
 config_profile = 'default'
-bucket_name = 'de_zoomcamp_2024_bucket'
+bucket_name = os.getenv('BUCKET_NAME')
 location_object = 'raw/vietnam_locations.parquet'
 default_day = os.getenv('DEFAULT_DATE')
 config_path = os.path.join(get_repo_path(), 'io_config.yaml')
@@ -28,7 +28,7 @@ def get_pollution_data(start_time: int, end_time: int, lat: float, lon: float):
 
     api_endpoint = "https://api.openweathermap.org/data/2.5/air_pollution/history"
 
-    response = requests.get(
+    res = requests.get(
         api_endpoint,
         params={
             "lat": lat,
@@ -38,11 +38,7 @@ def get_pollution_data(start_time: int, end_time: int, lat: float, lon: float):
             "appid": api_key,
         },
     )
-    if response.status_code != 200:
-        print("Error: API request failed with status code", response.status_code)
-
-    data = response.json()
-
+    data = res.json()
     return data
 
 
@@ -54,7 +50,6 @@ def convert_time_unix(datetime_: Union[datetime, str]) -> int:
 
 
 def export_data_to_google_cloud_storage(df, object_key) -> None:
-
     GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).export(
         df,
         bucket_name,
@@ -79,7 +74,7 @@ def get_data_bq(query: str):
         return pd.DataFrame()
 
 
-def check_cities_metrics_date_bd():
+def check_cities_metrics_date_bq():
     max_day_query = f'select max(dt) as max_dt from {raw_cities_metrics_table_id} limit 1'
     df = get_data_bq(max_day_query)
     if not df.empty:
@@ -95,7 +90,7 @@ def load_data_from_api(*args, **kwargs):
     """
     Template for loading data from API
     """
-    max_day = check_cities_metrics_date_bd()
+    max_day = check_cities_metrics_date_bq()
     
     if max_day:
         start = max_day
@@ -112,7 +107,7 @@ def load_data_from_api(*args, **kwargs):
 
     objects_path = []
     
-    for idx, row in df.iterrows():
+    for _, row in df.iterrows():
         city_name = row['city']
         print(f"getting data from city: {city_name}")
 
