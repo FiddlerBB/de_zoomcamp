@@ -96,11 +96,11 @@ open_weather:
     dev:
       type: bigquery
       method: service-account-json
-      project: pelagic-bonbon-387815
-      dataset: de_zoomcamp_pj
+      project: <project name>
+      dataset: <data set name>
       threads: 3 # Must be a value of 1 or greater 
       OPTIONAL_CONFIG: VALUE
-      location: US
+      location: <location>
       
       keyfile_json:
         type:
