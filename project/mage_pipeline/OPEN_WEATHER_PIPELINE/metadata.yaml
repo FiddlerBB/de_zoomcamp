@@ -6,3 +6,13 @@ features:
   code_block_v2: true
   dbt_v2: true
 pipelines:
+retry_config:
+  # Number of retry times
+  retries: 3
+  # Initial delay (in seconds) before retry. If exponential_backoff is true,
+  # the delay time is multiplied by 2 for the next retry
+  delay: 5
+  # Maximum time between the first attempt and the last retry
+  max_delay: 60
+  # Whether to use exponential backoff retry
+  exponential_backoff: true
