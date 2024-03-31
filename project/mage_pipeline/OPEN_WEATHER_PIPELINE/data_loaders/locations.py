@@ -1,13 +1,10 @@
-import io
 import pandas as pd
 import requests
-import json
 from pandas import DataFrame
-from typing import Union
 from mage_ai.settings.repo import get_repo_path
 from mage_ai.io.bigquery import BigQuery
 from mage_ai.io.config import ConfigFileLoader
-from os import path
+import os
 
 if 'data_loader' not in globals():
     from mage_ai.data_preparation.decorators import data_loader
@@ -24,24 +21,30 @@ cities = ['An Giang', 'Ba Ria - Vung Tau', 'Bac Lieu', 'Bac Giang', 'Bac Kan', '
           'Soc Trang', 'Son La', 'Tay Ninh', 'Thai Binh', 'Thai Nguyen', 'Thanh Hoa', 'Thua Thien Hue', 
           'Tien Giang', 'Tra Vinh', 'Tuyen Quang', 'Vinh Long', 'Vinh Phuc', 'Yen Bai']
 
-table_id = 'pelagic-bonbon-387815.de_zoomcamp_pj.locations'
-config_path = path.join(get_repo_path(), 'io_config.yaml')
+project_id = os.getenv('PROJECT_ID')
+schema = os.getenv('SCHEMA')
+table_id = f'{project_id}.{schema}.locations'
+config_path = os.path.join(get_repo_path(), 'io_config.yaml')
 config_profile = 'default'
 
-def check_table_exist() -> Union[DataFrame|bool]:
-    # get data from BQ to check if it has data
-    query = f'select * from pelagic-bonbon-387815.de_zoomcamp_pj.locations'
+def check_table_exist() -> DataFrame:
+    '''
+    Check raw location table in BQ
+    '''
+    query = f'select * from {table_id}'
     df = BigQuery.with_config(ConfigFileLoader(config_path, config_profile)).load(query)
     if df.shape[0] != len(cities):
-        print(f'empty Df')
+        print(f'Table {table_id} has no data or has no correct data. Attempt to get new data')
         return pd.DataFrame()
     else:
         return df
 
-def get_locations():
+def get_locations() -> DataFrame:
+    '''
+    Get data from the list and return city long and lat with assigned city_id
+    '''
     locations = []
 
-    # loop over cities to get their coordinates
     for id, city in enumerate(cities):
         url = f"https://nominatim.openstreetmap.org/search?q={city},+Vietnam&format=json"
         response = requests.get(url).json()
@@ -59,7 +62,7 @@ def get_locations():
 @data_loader
 def locations(*args, **kwargs):
     """
-    Template for loading data from API
+    If table is empty then try to get new data
     """
     df = check_table_exist()
 
@@ -68,10 +71,3 @@ def locations(*args, **kwargs):
         return df
     else:
         return None
-
-# @test
-# def test_output(output, *args) -> None:
-#     """
-#     Template code for testing the output of the block.
-#     """
-#     assert output is not None, 'The output is undefined'

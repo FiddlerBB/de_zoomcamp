@@ -2,19 +2,25 @@ from mage_ai.settings.repo import get_repo_path
 from mage_ai.io.bigquery import BigQuery
 from mage_ai.io.config import ConfigFileLoader
 from mage_ai.io.google_cloud_storage import GoogleCloudStorage
-from os import path
 import os
+from pandas import DataFrame
 
 if 'data_exporter' not in globals():
     from mage_ai.data_preparation.decorators import data_exporter
 
-config_path = path.join(get_repo_path(), 'io_config.yaml')
+config_path = os.path.join(get_repo_path(), 'io_config.yaml')
 config_profile = 'default'
 bucket_name = os.getenv('BUCKET_NAME')
-table_id = 'pelagic-bonbon-387815.de_zoomcamp_pj.cities_metrics'
+project_id = os.getenv('PROJECT_ID')
+schema = os.getenv('SCHEMA')
+
+table_id = f'{project_id}.{schema}.cities_metrics'
 
 
-def load_from_google_cloud_storage(object_key: str):
+def load_from_google_cloud_storage(object_key: str) -> DataFrame:
+    '''
+    Load data from bucket and do some small transform to rename column
+    '''
     df = GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).load(
         bucket_name,
         object_key,
@@ -39,13 +45,11 @@ def load_from_google_cloud_storage(object_key: str):
 @data_exporter
 def export_data_to_big_query(city_names: list, **kwargs) -> None:
     """
-    Template for exporting data to a BigQuery warehouse.
-    Specify your configuration settings in 'io_config.yaml'.
-
-    Docs: https://docs.mage.ai/design/data-loading#bigquery
+    Loop through a list of file paths
+    Read the file from bucket and export to BQ
     """
-    for file in enumerate(city_names):
-        df = load_from_google_cloud_storage(f'{file[1]}')
+    for file in city_names:
+        df = load_from_google_cloud_storage(file)
         method = 'append'
         BigQuery.with_config(ConfigFileLoader(config_path, config_profile)).export(
             df,
